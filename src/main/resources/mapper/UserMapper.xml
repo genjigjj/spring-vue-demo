@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjj.springvuedemo.dao.UserMapper">
+<!-- 这里用User而不是com.gjj.springvuedemo.entity.User(用它也是可以的)，是spring-mybatis别名 -->
+  <resultMap id="BaseResultMap" type="User">
+    <id column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="user_name" jdbcType="VARCHAR" property="username" />
+    <result column="user_pwd" jdbcType="VARCHAR" property="password" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uid, user_name, user_pwd
+  </sql>
+  <select id="getAllUsers"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_info
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_info
+    where uid = #{id}
+  </select>
+
+  <select id="findUserByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_info
+    where user_name = #{username}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user_info
+    where uid = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.gjj.springvuedemo.model.User">
+    insert into user_info (uid, user_name, user_pwd)
+    values (#{uid}, #{username}, #{password})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gjj.springvuedemo.model.User">
+    insert into user_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="username != null">
+        user_name,
+      </if>
+      <if test="password != null">
+        user_pwd,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="user_pwd != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gjj.springvuedemo.model.User">
+    update user_info
+    <set>
+      <if test="username != null">
+        user_name = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="user_pwd != null">
+        user_pwd = #{password,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{uid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gjj.springvuedemo.model.User">
+    update user_info
+    set user_name = #{username,jdbcType=VARCHAR},
+      user_pwd = #{password,jdbcType=VARCHAR},
+    where id = #{uid,jdbcType=INTEGER}
+  </update>
+</mapper>
