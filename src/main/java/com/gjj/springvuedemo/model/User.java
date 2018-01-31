@@ -1,58 +1,33 @@
-/**
- * 文件名: User.java
- * 版权：  深圳市中诺思资讯
-
- * 描述:  
- * 修改人: gjj
- * 修改时间： 2018年1月30日上午10:05:39
- * 修改内容:
- */
 package com.gjj.springvuedemo.model;
 
-import java.io.Serializable;
+public class User {
+    private Integer uid;
 
+    private String userName;
 
-/**
- * 功能简述：〈用户〉
- * @author     gjj
- * @version   [版本号, YYYY-MM-DD]2018年1月30日上午10:05:39;
- * @see       [相关类/方法]
- * @since     [产品/模块版本]
- * 
- */
+    private String userPassword;
 
-@SuppressWarnings("serial")
-public class User implements Serializable{
-	
-	private Integer uid;
+    public Integer getUid() {
+        return uid;
+    }
 
-	private String username;
-	
-	private String password;
+    public void setUid(Integer uid) {
+        this.uid = uid;
+    }
 
-	public Integer getUid() {
-		return uid;
-	}
+    public String getUserName() {
+        return userName;
+    }
 
-	public void setUid(Integer uid) {
-		this.uid = uid;
-	}
+    public void setUserName(String userName) {
+        this.userName = userName == null ? null : userName.trim();
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public String getUserPassword() {
+        return userPassword;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword == null ? null : userPassword.trim();
+    }
 }

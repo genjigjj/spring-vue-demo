@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gjj.springvuedemo.dao.RoleMapper" >
+  <resultMap id="BaseResultMap" type="com.gjj.springvuedemo.model.Role" >
+    <id column="rid" property="rid" jdbcType="INTEGER" />
+    <result column="rname" property="rname" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    rid, rname
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_role
+    where rid = #{rid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_role
+    where rid = #{rid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.gjj.springvuedemo.model.Role" >
+    insert into t_role (rid, rname)
+    values (#{rid,jdbcType=INTEGER}, #{rname,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gjj.springvuedemo.model.Role" >
+    insert into t_role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="rid != null" >
+        rid,
+      </if>
+      <if test="rname != null" >
+        rname,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="rid != null" >
+        #{rid,jdbcType=INTEGER},
+      </if>
+      <if test="rname != null" >
+        #{rname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gjj.springvuedemo.model.Role" >
+    update t_role
+    <set >
+      <if test="rname != null" >
+        rname = #{rname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where rid = #{rid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gjj.springvuedemo.model.Role" >
+    update t_role
+    set rname = #{rname,jdbcType=VARCHAR}
+    where rid = #{rid,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,46 +1,21 @@
-/**
- * 文件名: UserMapper.java
- * 版权：  深圳市中诺思资讯
-
- * 描述:  
- * 修改人: gjj
- * 修改时间： 2018年1月30日上午10:52:18
- * 修改内容:
- */
 package com.gjj.springvuedemo.dao;
-
-import java.util.List;
-
-import org.apache.ibatis.annotations.Mapper;
 
 import com.gjj.springvuedemo.model.User;
 
+import java.util.List;
 
-/**
- * 功能简述：〈功能简述〉
- * @author     gjj
- * @version   [版本号, YYYY-MM-DD]2018年1月30日上午10:52:18;
- * @see       [相关类/方法]
- * @since     [产品/模块版本]
- * 
- */
-@Mapper
 public interface UserMapper {
-	
-	List<User> getAllUsers();
-	
-	void deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Integer uid);
 
-	void insert(User user);
+    int insert(User record);
 
-	void insertSelective(User user);
+    int insertSelective(User record);
 
-	User selectByPrimaryKey(String id);
+    User selectByPrimaryKey(Integer uid);
 
-	void updateByPrimaryKeySelective(User user);
+    int updateByPrimaryKeySelective(User record);
 
-	void updateByPrimaryKey(User record);
+    int updateByPrimaryKey(User record);
 
-	User findUserByUserName(String username);
-	
+    List<User> getAllUser();
 }

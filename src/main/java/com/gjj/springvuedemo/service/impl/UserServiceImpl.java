@@ -11,11 +11,11 @@ package com.gjj.springvuedemo.service.impl;
 
 import java.util.List;
 
+import com.gjj.springvuedemo.dao.UserMapper;
+import com.gjj.springvuedemo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gjj.springvuedemo.dao.UserMapper;
-import com.gjj.springvuedemo.model.User;
 import com.gjj.springvuedemo.service.IUserService;
 
 /**
@@ -34,7 +34,7 @@ public class UserServiceImpl implements IUserService{
 	
 	@Override
 	public List<User> getAllUser() {
-		return userMapper.getAllUsers();
+		return userMapper.getAllUser();
 	}
 
 }

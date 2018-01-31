@@ -41,7 +41,7 @@ spring:
 mybatis:
   # 对应实体类的包名
   typeAliasesPackage: com.gjj.springvuedemo.model	
-  #mapper位置
-  mappers: com.gjj.springvuedemo.dao
   # mapper.xml文件所在位置
   mapperLocations: classpath:mapper/*.xml
+
+#shiro

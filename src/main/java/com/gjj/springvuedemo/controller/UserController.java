@@ -9,8 +9,8 @@
  */
 package com.gjj.springvuedemo.controller;
 
-import java.util.List;
-
+import com.gjj.springvuedemo.model.User;
+import com.gjj.springvuedemo.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gjj.springvuedemo.model.User;
-import com.gjj.springvuedemo.service.IUserService;
+import java.util.List;
 
 /**
  * 功能简述：〈功能简述〉
