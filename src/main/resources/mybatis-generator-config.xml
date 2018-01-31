@@ -4,12 +4,6 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
 <generatorConfiguration>
     
-    <!--mybatis生成工具的帮助文档可以看：-->
-    <!--英文：http://www.mybatis.org/generator/usage/mysql.html-->
-    <!--中文：http://www.mybatis.tk/-->
-    <!--中文：http://mbg.cndocs.tk/-->
-    
-    
     <!--添加你本地的驱动jar-->
   <!--   <classPathEntry location="C:\Files\.m2\repository\mysql\mysql-connector-java\5.1.21\mysql-connector-java-5.1.21.jar"/> -->
     <classPathEntry location="C:\Users\gjj\.m2\repository\mysql\mysql-connector-java\5.1.21\mysql-connector-java-5.1.21.jar"/>
@@ -35,7 +29,7 @@
         </javaTypeResolver>
 
         <!--要生成的 pojo 模块位置-->
-        <javaModelGenerator targetPackage="com.gjj.springvuedemo.model" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="com.gjj.springvuedemo.model" targetProject="spring-vue-demo">
             <!-- enableSubPackages:是否让schema作为包的后缀 -->
             <property name="enableSubPackages" value="false"/>
             <!-- 从数据库返回的值被清理前后的空格 -->
@@ -43,15 +37,15 @@
         </javaModelGenerator>
 
         <!--要生成的 Mapper.xml 文件位置-->
-        <sqlMapGenerator targetPackage="mapper"
-                         targetProject="src/main/resources">
+        <sqlMapGenerator targetPackage="com.gjj.springvuedemo.mapper"
+                         targetProject="spring-vue-demo">
             <!-- enableSubPackages:是否让schema作为包的后缀 -->
             <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
 
         <!-- targetPackage：mapper接口生成的位置 -->
         <javaClientGenerator targetPackage="com.gjj.springvuedemo.dao"
-                             targetProject="src/main/java"
+                             targetProject="spring-vue-demo"
                              type="XMLMAPPER">
             <!-- enableSubPackages:是否让schema作为包的后缀 -->
             <property name="enableSubPackages" value="false"/>
