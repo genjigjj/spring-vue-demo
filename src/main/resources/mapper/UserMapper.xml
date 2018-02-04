@@ -20,6 +20,12 @@
     <include refid="Base_Column_List" />
     from t_user
   </select>
+  <select id="findByUsername" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    from t_user
+    where user_name = #{username,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_user
     where uid = #{uid,jdbcType=INTEGER}

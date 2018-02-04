@@ -37,4 +37,9 @@ public class UserServiceImpl implements IUserService{
 		return userMapper.getAllUser();
 	}
 
+	@Override
+	public User findByUserName(String username) {
+		return userMapper.findByUsername(username);
+	}
+
 }

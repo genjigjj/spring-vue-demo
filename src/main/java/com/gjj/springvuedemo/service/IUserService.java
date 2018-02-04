@@ -14,15 +14,30 @@ import com.gjj.springvuedemo.model.User;
 import java.util.List;
 
 /**
- * 功能简述：〈功能简述〉
- * @author     gjj
- * @version   [版本号, YYYY-MM-DD]2018年1月30日上午11:42:29;
- * @see       [相关类/方法]
- * @since     [产品/模块版本]
- * 
+ * 用户Service接口
+ *
+ * @author gjj
+ *
+ * @date 2018/2/2
  */
-
 public interface IUserService {
 
-	public List<User>  getAllUser();
+	/**
+	 * 获取所有用户
+	 * @param 
+	 * @return 用户列表
+	 * @Author gjj
+	 * @date 2018/2/2
+	 */ 
+	List<User>  getAllUser();
+	
+	/**
+	 * 通过用户名获取用户信息
+	 * @param username 用户名
+	 * @return 该用户信息
+	 * @Author gjj
+	 * @date 2018/2/3
+	 */ 
+	User findByUserName(String username);
+
 }
