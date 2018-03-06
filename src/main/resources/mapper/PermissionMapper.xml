@@ -14,13 +14,6 @@
     from t_permission
     where pid = #{pid,jdbcType=INTEGER}
   </select>
-  <select id="findByUserid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select distinct
-    p.pid,p.pname
-    from t_permission p
-    inner join t_role_permission rp on rp.pid = p.pid
-    inner join t_user_role ur on ur.rid = rp.rid and ur.uid = #{uid,jdbcType=INTEGER}
-  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_permission
     where pid = #{pid,jdbcType=INTEGER}

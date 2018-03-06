@@ -1,10 +1,9 @@
 package com.gjj.springvuedemo.shiro;
 
 import com.gjj.springvuedemo.model.Permission;
+import com.gjj.springvuedemo.model.Role;
 import com.gjj.springvuedemo.model.User;
-import com.gjj.springvuedemo.service.IPermissionService;
 import com.gjj.springvuedemo.service.IUserService;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -12,8 +11,8 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 用户自定义Realm
@@ -28,10 +27,6 @@ public class UserRealm extends AuthorizingRealm {
     @Autowired
     private IUserService userService;
 
-    /** 注入权限Service */
-    @Autowired
-    private IPermissionService permissionService;
-
     /**
      * 授权
      * @param
@@ -42,14 +37,18 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         User user = (User) principalCollection.fromRealm(this.getClass().getName()).iterator().next();
-        List<String> permissionList = new ArrayList<>();
-        List<Permission> temp = permissionService.findByUserid(user.getUid());
-        if(CollectionUtils.isNotEmpty(temp)){
-            for (Permission permission : temp){
+        Set<String> roleList = new HashSet<>();
+        Set<String> permissionList = new HashSet<>();
+        //从数据库中取出用户信息
+        User temp = userService.findUserById(user.getUid());
+        for(Role role: temp.getRoleList()){
+            roleList.add(role.getRname());
+            for(Permission permission : role.getPermissionList()){
                 permissionList.add(permission.getPname());
             }
         }
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+        simpleAuthorizationInfo.addRoles(roleList);
         simpleAuthorizationInfo.addStringPermissions(permissionList);
         return simpleAuthorizationInfo;
     }

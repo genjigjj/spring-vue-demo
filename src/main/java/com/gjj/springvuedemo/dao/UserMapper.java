@@ -27,4 +27,16 @@ public interface UserMapper {
      * @date 2018/2/3
      */
     User findByUsername(String username);
+
+    List<User> findByIds(Integer[] queryIds);
+
+    /**
+     * 通过用户id查询用户
+     * @param uid 用户id
+     * @return 用户信息
+     * @author gjj
+     * @date 2018/3/4
+     */
+    User findUserById(Integer uid);
+
 }

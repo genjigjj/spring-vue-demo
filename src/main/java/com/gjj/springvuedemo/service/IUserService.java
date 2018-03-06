@@ -40,4 +40,22 @@ public interface IUserService {
 	 */ 
 	User findByUserName(String username);
 
+	/**
+	 * 通过用户id数组查询用户
+	 * @param ids 用户id数组
+	 * @return 用户列表
+	 * @Author gjj
+	 * @date 2018/3/4
+	 */
+	List<User> findByIds(Integer[] ids);
+
+	/**
+	 * 通过用户id查询用户
+	 * @param uid 用户id
+	 * @return 用户信息
+	 * @author gjj
+	 * @date 2018/3/4
+	 */ 
+	User findUserById(Integer uid);
+
 }

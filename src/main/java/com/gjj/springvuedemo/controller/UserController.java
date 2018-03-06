@@ -11,6 +11,7 @@ package com.gjj.springvuedemo.controller;
 
 import com.gjj.springvuedemo.model.User;
 import com.gjj.springvuedemo.service.IUserService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -22,15 +23,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * 功能简述：〈功能简述〉
- * @author     gjj
- * @version   [版本号, YYYY-MM-DD]2018年1月30日上午11:41:18;
- * @see       [相关类/方法]
- * @since     [产品/模块版本]
- * 
+ * 用户控制器
+ *
+ * @author gjj
+ *
+ * @date 2018/3/3
  */
 @RestController
 public class UserController {
@@ -39,7 +41,7 @@ public class UserController {
 	private IUserService userService;
 
     @RequiresPermissions("Create")
-	@RequestMapping(value = "/users",method = RequestMethod.GET)
+	@RequestMapping(value = "/allusers",method = RequestMethod.GET)
 	public ResponseEntity<?> getAllUsers() {
 		List<User> userList = userService.getAllUser();
 		return new ResponseEntity<>(userList, HttpStatus.OK);
@@ -53,9 +55,9 @@ public class UserController {
 			subject.login(token);
 			User user = (User) subject.getPrincipal();
 			subject.getSession().setAttribute("user",user);
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>("登录成功",HttpStatus.OK);
 		}catch (Exception e){
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<>("登录失败",HttpStatus.UNAUTHORIZED);
 		}
 	}
 
@@ -63,7 +65,7 @@ public class UserController {
 	 * 登出
 	 * @param
 	 * @return
-	 * @Author gjj
+	 * @author gjj
 	 * @date 2018/2/3
 	 */
     @RequestMapping(value = "/logout",method = RequestMethod.GET)
@@ -78,5 +80,24 @@ public class UserController {
         }
 
     }
+
+    /**
+     * 通过多个id获取用户
+     * @param 
+     * @return 
+     * @author gjj
+     * @date 2018/3/4
+     */ 
+    @RequestMapping(value = "/users",method = RequestMethod.GET)
+    public ResponseEntity<?> findUserByIds(){
+        Integer[] ids = new Integer[]{1,2};
+		List<User> userList = userService.findByIds(ids);
+        Map<String,Object> resultMap = new HashMap<>(16);
+		if (CollectionUtils.isNotEmpty(userList)){
+		    resultMap.put("users",userList);
+		    return new ResponseEntity<>(resultMap,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
 
 }

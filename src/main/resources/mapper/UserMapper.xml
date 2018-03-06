@@ -6,6 +6,20 @@
     <result column="user_name" property="userName" jdbcType="VARCHAR" />
     <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
   </resultMap>
+  
+  <resultMap id="userMap" type="com.gjj.springvuedemo.model.User">
+    <id column="uid" property="uid"/>
+    <result column="user_name" property="userName" />
+    <result column="user_password" property="userPassword" />
+    <collection property="roleList" ofType="com.gjj.springvuedemo.model.Role">
+      <id column="rid" property="rid" />
+      <result column="rname" property="rname" />
+      <collection property="permissionList" ofType="com.gjj.springvuedemo.model.Permission">
+        <id column="pid" property="pid" />
+        <result column="pname" property="pname" />
+      </collection>
+    </collection>
+  </resultMap>
   <sql id="Base_Column_List" >
     uid, user_name, user_password
   </sql>
@@ -79,4 +93,24 @@
       user_password = #{userPassword,jdbcType=VARCHAR}
     where uid = #{uid,jdbcType=INTEGER}
   </update>
+
+  <select id="findByIds" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_user
+    where uid in
+    <foreach collection="array" item="id" open="(" separator="," close=")">
+        #{id}
+    </foreach>
+  </select>
+  
+  <select id="findUserById" parameterType="Integer" resultMap="userMap">
+    select u.*,p.*,r.*
+    from t_user u
+    INNER JOIN t_user_role ur on ur.uid = u.uid
+    INNER JOIN t_role r on r.rid = ur.rid
+    INNER JOIN t_role_permission rp on rp.rid = r.rid
+    INNER JOIN t_permission p on p.pid = rp.pid
+    where u.uid = #{uid}
+  </select>
 </mapper>

@@ -9,14 +9,13 @@
  */
 package com.gjj.springvuedemo.service.impl;
 
-import java.util.List;
-
 import com.gjj.springvuedemo.dao.UserMapper;
 import com.gjj.springvuedemo.model.User;
+import com.gjj.springvuedemo.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gjj.springvuedemo.service.IUserService;
+import java.util.List;
 
 /**
  * 功能简述：〈功能简述〉
@@ -40,6 +39,16 @@ public class UserServiceImpl implements IUserService{
 	@Override
 	public User findByUserName(String username) {
 		return userMapper.findByUsername(username);
+	}
+
+	@Override
+	public List<User> findByIds(Integer[] ids) {
+		return userMapper.findByIds(ids);
+	}
+
+	@Override
+	public User findUserById(Integer uid) {
+		return userMapper.findUserById(uid);
 	}
 
 }
