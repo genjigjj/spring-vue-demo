@@ -9,23 +9,14 @@
  */
 package com.gjj.springvuedemo.controller;
 
-import com.gjj.springvuedemo.model.User;
+import com.alibaba.fastjson.JSONObject;
 import com.gjj.springvuedemo.service.IUserService;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 用户控制器
@@ -40,25 +31,10 @@ public class UserController {
 	@Autowired
 	private IUserService userService;
 
-    @RequiresPermissions("Create")
-	@RequestMapping(value = "/allusers",method = RequestMethod.GET)
-	public ResponseEntity<?> getAllUsers() {
-		List<User> userList = userService.getAllUser();
-		return new ResponseEntity<>(userList, HttpStatus.OK);
-	}
 
-	@RequestMapping(value = "/login",method = RequestMethod.POST)
-	public ResponseEntity<?> login(String username,String password){
-		UsernamePasswordToken token = new UsernamePasswordToken(username,password);
-		Subject subject = SecurityUtils.getSubject();
-		try {
-			subject.login(token);
-			User user = (User) subject.getPrincipal();
-			subject.getSession().setAttribute("user",user);
-			return new ResponseEntity<>("登录成功",HttpStatus.OK);
-		}catch (Exception e){
-			return new ResponseEntity<>("登录失败",HttpStatus.UNAUTHORIZED);
-		}
+	@PostMapping(value = "/login")
+	public JSONObject login(@RequestBody JSONObject requestJson){
+        return userService.login(requestJson);
 	}
 
 	/**
@@ -68,18 +44,23 @@ public class UserController {
 	 * @author gjj
 	 * @date 2018/2/3
 	 */
-    @RequestMapping(value = "/logout",method = RequestMethod.GET)
-	public ResponseEntity<?> logOut(){
-	    Subject subject = SecurityUtils.getSubject();
-	    try{
-            subject.logout();
-            return new ResponseEntity<>(HttpStatus.OK);
-        }catch (Exception e){
-	        e.printStackTrace();
-	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
+    @PostMapping(value = "/logout")
+	public JSONObject logOut(){
+        return userService.logOut();
     }
+
+    /**
+     * 获取所有用户
+     * @return json数据
+     * @author gjj
+     * @date 2018-03-13
+     */
+    @RequiresPermissions("Create")
+    @GetMapping(value = "/allusers")
+    public JSONObject getAllUsers() {
+        return userService.getAllUser();
+    }
+
 
     /**
      * 通过多个id获取用户
@@ -88,16 +69,9 @@ public class UserController {
      * @author gjj
      * @date 2018/3/4
      */ 
-    @RequestMapping(value = "/users",method = RequestMethod.GET)
-    public ResponseEntity<?> findUserByIds(){
-        Integer[] ids = new Integer[]{1,2};
-		List<User> userList = userService.findByIds(ids);
-        Map<String,Object> resultMap = new HashMap<>(16);
-		if (CollectionUtils.isNotEmpty(userList)){
-		    resultMap.put("users",userList);
-		    return new ResponseEntity<>(resultMap,HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    @PostMapping(value = "/users")
+    public JSONObject findUserByIds(@RequestBody JSONObject requestJson){
+       return userService.findByIds(requestJson);
 	}
 
 }

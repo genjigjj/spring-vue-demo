@@ -9,9 +9,8 @@
  */
 package com.gjj.springvuedemo.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.gjj.springvuedemo.model.User;
-
-import java.util.List;
 
 /**
  * 用户Service接口
@@ -29,7 +28,7 @@ public interface IUserService {
 	 * @Author gjj
 	 * @date 2018/2/2
 	 */ 
-	List<User>  getAllUser();
+	JSONObject  getAllUser();
 	
 	/**
 	 * 通过用户名获取用户信息
@@ -42,12 +41,12 @@ public interface IUserService {
 
 	/**
 	 * 通过用户id数组查询用户
-	 * @param ids 用户id数组
+	 * @param jsonObject 用户id数组json
 	 * @return 用户列表
 	 * @Author gjj
 	 * @date 2018/3/4
 	 */
-	List<User> findByIds(Integer[] ids);
+	JSONObject findByIds(JSONObject jsonObject);
 
 	/**
 	 * 通过用户id查询用户
@@ -57,5 +56,22 @@ public interface IUserService {
 	 * @date 2018/3/4
 	 */ 
 	User findUserById(Integer uid);
+
+	/**
+	 * 用户登录
+	 * @param jsonObject 登录参数，包括用户名和密码
+	 * @return 登录是否成功的json数据
+	 * @author gjj
+	 * @date 2018-03-13
+	 */ 
+	JSONObject login(JSONObject jsonObject);
+
+	/**
+	 * 登出
+	 * @return 是否登出成功json数据
+	 * @author gjj
+	 * @date 2018-03-13
+	 */
+	JSONObject logOut();
 
 }

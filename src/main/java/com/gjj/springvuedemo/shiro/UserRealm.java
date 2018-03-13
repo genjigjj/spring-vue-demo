@@ -64,8 +64,15 @@ public class UserRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) authenticationToken;
         String username = usernamePasswordToken.getUsername();
-        User user = userService.findByUserName(username);
-        return  new SimpleAuthenticationInfo(user,user.getUserPassword(),this.getClass().getName());
+        if(username != null){
+            User user = userService.findByUserName(username);
+            if (user == null){
+                //账号不存在
+                throw  new UnknownAccountException();
+            }
+            return  new SimpleAuthenticationInfo(user,user.getUserPassword(),this.getClass().getName());
+        }
+        return null;
     }
 
 }
