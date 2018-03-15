@@ -14,10 +14,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.gjj.springvuedemo.dao.UserMapper;
 import com.gjj.springvuedemo.model.User;
 import com.gjj.springvuedemo.service.IUserService;
-import com.gjj.springvuedemo.util.ErrorEnum;
+import com.gjj.springvuedemo.util.ResultEnum;
 import com.gjj.springvuedemo.util.JsonUtil;
+import com.gjj.springvuedemo.vo.UserVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +46,9 @@ public class UserServiceImpl implements IUserService{
 	public JSONObject getAllUser() {
 	    List<User> userList = userMapper.getAllUser();
 	    if(CollectionUtils.isNotEmpty(userList)){
-	        return JsonUtil.successJson(userList);
+	        return JsonUtil.returnJson(,userList);
         }
-		return JsonUtil.errorJson(ErrorEnum.E_200);
+		return JsonUtil.errorJson(ResultEnum.E_200);
 	}
 
 	@Override
@@ -61,11 +63,11 @@ public class UserServiceImpl implements IUserService{
         for (Object object : jsonArray){
             ids.add((Integer) object);
         }
-		List<User> userList = userMapper.findByIds((Integer[]) ids.toArray(new Integer[ids.size()]));
+		List<User> userList = userMapper.findByIds(ids.toArray(new Integer[ids.size()]));
         if (CollectionUtils.isNotEmpty(userList)){
             return JsonUtil.successJson(userList);
         }
-        return JsonUtil.errorJson(ErrorEnum.E_200);
+        return JsonUtil.errorJson(ResultEnum.E_200);
 	}
 
 	@Override
@@ -75,17 +77,16 @@ public class UserServiceImpl implements IUserService{
 
     @Override
     public JSONObject login(JSONObject jsonObject) {
-        String username = jsonObject.getString("username");
-        String password = jsonObject.getString("password");
+        UserVo userVo = JSONObject.parseObject(jsonObject.toJSONString(),UserVo.class);
         Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken token = new UsernamePasswordToken(username,password);
+        UsernamePasswordToken token = new UsernamePasswordToken(userVo.getUsername(),userVo.getPassword());
         try {
             subject.login(token);
             User user = (User) subject.getPrincipal();
             subject.getSession().setAttribute("user",user);
-            return JsonUtil.successJson("登录成功");
-        }catch (Exception e){
-            return JsonUtil.errorJson(ErrorEnum.E_100);
+            return JsonUtil.successJson("success");
+        }catch (AuthenticationException e){
+            return JsonUtil.errorJson(ResultEnum.E_100);
         }
     }
 

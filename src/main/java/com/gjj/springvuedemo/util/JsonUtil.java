@@ -18,25 +18,13 @@ public class JsonUtil {
      * @author gjj
      * @date 2018-03-13
      */ 
-    public static <T>JSONObject successJson(T returnData){
+    public static <T>JSONObject returnJson(ResultEnum resultEnum,T returnData){
         JSONObject resultJson = new JSONObject();
-        resultJson.put("returnCode", Constants.SUCCESS_CODE);
-        resultJson.put("returnMsg", Constants.SUCCESS_MSG);
-        resultJson.put("returnData", returnData);
-        return resultJson;
-    }
-
-    /**
-     * 返回错误json数据
-     * @param errorEnum 错误枚举类
-     * @return json数据
-     * @author gjj
-     * @date 2018-03-13
-     */
-    public static JSONObject errorJson(ErrorEnum errorEnum) {
-        JSONObject resultJson = new JSONObject();
-        resultJson.put("returnCode", errorEnum.getErrorCode());
-        resultJson.put("returnMsg", errorEnum.getErrorMsg());
+        resultJson.put("returnCode", resultEnum.getCode());
+        resultJson.put("returnMsg", resultEnum.getMessage());
+        if(returnData != null){
+            resultJson.put("returnData", returnData);
+        }
         return resultJson;
     }
 

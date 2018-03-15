@@ -1,7 +1,7 @@
 package com.gjj.springvuedemo.shiro;
 
 import com.alibaba.fastjson.JSONObject;
-import com.gjj.springvuedemo.util.ErrorEnum;
+import com.gjj.springvuedemo.util.ResultEnum;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -23,8 +23,8 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("returnCode", ErrorEnum.E_20011.getErrorCode());
-        jsonObject.put("returnMsg", ErrorEnum.E_20011.getErrorMsg());
+        jsonObject.put("returnCode", ResultEnum.E_20011.getErrorCode());
+        jsonObject.put("returnMsg", ResultEnum.E_20011.getErrorMsg());
         PrintWriter out = null;
         HttpServletResponse res = (HttpServletResponse) response;
         try {
