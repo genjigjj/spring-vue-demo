@@ -3,6 +3,8 @@ package com.gjj.springvuedemo.shiro;
 import com.alibaba.fastjson.JSONObject;
 import com.gjj.springvuedemo.util.ResultEnum;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 
@@ -20,11 +22,13 @@ import java.io.PrintWriter;
  **/
 public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
 
+    private static final Logger logger = LoggerFactory.getLogger(AjaxAuthenticationFilter.class);
+
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("returnCode", ResultEnum.E_20011.getErrorCode());
-        jsonObject.put("returnMsg", ResultEnum.E_20011.getErrorMsg());
+        jsonObject.put("returnCode", ResultEnum.UNAUTHORIZED.getCode());
+        jsonObject.put("returnMsg", ResultEnum.UNAUTHORIZED.getMessage());
         PrintWriter out = null;
         HttpServletResponse res = (HttpServletResponse) response;
         try {
@@ -33,6 +37,7 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
             out = response.getWriter();
             out.println(jsonObject);
         } catch (Exception e) {
+            logger.info(e.getMessage(),e);
         } finally {
             if (null != out) {
                 out.flush();

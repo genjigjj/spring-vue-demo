@@ -14,14 +14,16 @@ import com.alibaba.fastjson.JSONObject;
 import com.gjj.springvuedemo.dao.UserMapper;
 import com.gjj.springvuedemo.model.User;
 import com.gjj.springvuedemo.service.IUserService;
-import com.gjj.springvuedemo.util.ResultEnum;
 import com.gjj.springvuedemo.util.JsonUtil;
+import com.gjj.springvuedemo.util.ResultEnum;
 import com.gjj.springvuedemo.vo.UserVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,14 +43,17 @@ public class UserServiceImpl implements IUserService{
 	
 	@Autowired
 	private UserMapper userMapper;
-	
-	@Override
+
+	/** 日志 */
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
+    @Override
 	public JSONObject getAllUser() {
 	    List<User> userList = userMapper.getAllUser();
 	    if(CollectionUtils.isNotEmpty(userList)){
-	        return JsonUtil.returnJson(,userList);
+	        return JsonUtil.returnJson(ResultEnum.DATA_SUCCESS,userList);
         }
-		return JsonUtil.errorJson(ResultEnum.E_200);
+		return JsonUtil.returnJson(ResultEnum.DATA_FAIL,null);
 	}
 
 	@Override
@@ -65,9 +70,9 @@ public class UserServiceImpl implements IUserService{
         }
 		List<User> userList = userMapper.findByIds(ids.toArray(new Integer[ids.size()]));
         if (CollectionUtils.isNotEmpty(userList)){
-            return JsonUtil.successJson(userList);
+            return JsonUtil.returnJson(ResultEnum.DATA_SUCCESS,userList);
         }
-        return JsonUtil.errorJson(ResultEnum.E_200);
+        return JsonUtil.returnJson(ResultEnum.DATA_FAIL,null);
 	}
 
 	@Override
@@ -84,9 +89,10 @@ public class UserServiceImpl implements IUserService{
             subject.login(token);
             User user = (User) subject.getPrincipal();
             subject.getSession().setAttribute("user",user);
-            return JsonUtil.successJson("success");
+            return JsonUtil.returnJson(ResultEnum.LOGIN_SUCCESS,null);
         }catch (AuthenticationException e){
-            return JsonUtil.errorJson(ResultEnum.E_100);
+            logger.info("认证失败");
+            return JsonUtil.returnJson(ResultEnum.LOGIN_FAIL,null);
         }
     }
 
@@ -96,9 +102,10 @@ public class UserServiceImpl implements IUserService{
             Subject subject = SecurityUtils.getSubject();
             subject.logout();
         }catch (Exception e){
-	        e.printStackTrace();
+            logger.info(e.getMessage(),e);
+            return JsonUtil.returnJson(ResultEnum.LOGOUT_SUCCESS,null);
         }
-        return JsonUtil.successJson("退出成功");
+        return JsonUtil.returnJson(ResultEnum.LOGOUT_SUCCESS,null);
     }
 
 }

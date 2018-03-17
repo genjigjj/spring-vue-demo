@@ -9,7 +9,11 @@ package com.gjj.springvuedemo.util;
 public enum ResultEnum {
 
     LOGIN_FAIL("100","登录失败"),
-    DATA_FAIL("200","数据获取失败"),
+    LOGIN_SUCCESS("101","登录成功"),
+    LOGOUT_FAIL("200","退出失败"),
+    LOGOUT_SUCCESS("201","退出成功"),
+    DATA_FAIL("300","数据获取失败"),
+    DATA_SUCCESS("301","数据获取成功"),
     BAD_REQUEST("400", "请求处理异常，请稍后再试"),
     UNAUTHORIZED("401", "权限不足"),
     NOT_FOUND("404", "请求路径不存在"),

@@ -31,7 +31,6 @@ public class UserController {
 	@Autowired
 	private IUserService userService;
 
-
 	@PostMapping(value = "/login")
 	public JSONObject login(@RequestBody JSONObject requestJson){
         return userService.login(requestJson);
