@@ -13,6 +13,8 @@ public class UserVo {
 
     private String password;
 
+    private Integer[] queryIds;
+
     public String getUsername() {
         return username;
     }
@@ -27,5 +29,13 @@ public class UserVo {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Integer[] getQueryIds() {
+        return queryIds;
+    }
+
+    public void setQueryIds(Integer[] queryIds) {
+        this.queryIds = queryIds;
     }
 }

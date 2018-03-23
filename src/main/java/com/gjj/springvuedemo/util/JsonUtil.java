@@ -12,7 +12,7 @@ import com.alibaba.fastjson.JSONObject;
 public class JsonUtil {
 
     /**
-     * 返回成功json数据
+     * 返回json数据
      * @param returnData 返回数据
      * @return json数据
      * @author gjj

@@ -1,16 +1,8 @@
-/**
- * 文件名: IUserService.java
- * 版权：  深圳市中诺思资讯
-
- * 描述:  
- * 修改人: gjj
- * 修改时间： 2018年1月30日上午11:42:29
- * 修改内容:
- */
 package com.gjj.springvuedemo.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.gjj.springvuedemo.model.User;
+import com.gjj.springvuedemo.vo.UserVo;
 
 /**
  * 用户Service接口
@@ -41,12 +33,12 @@ public interface IUserService {
 
 	/**
 	 * 通过用户id数组查询用户
-	 * @param jsonObject 用户id数组json
+	 * @param userVo 用户视图
 	 * @return 用户列表
 	 * @Author gjj
 	 * @date 2018/3/4
 	 */
-	JSONObject findByIds(JSONObject jsonObject);
+	JSONObject findByIds(UserVo userVo);
 
 	/**
 	 * 通过用户id查询用户
@@ -59,12 +51,12 @@ public interface IUserService {
 
 	/**
 	 * 用户登录
-	 * @param jsonObject 登录参数，包括用户名和密码
+	 * @param userVo 登录参数，包括用户名和密码
 	 * @return 登录是否成功的json数据
 	 * @author gjj
 	 * @date 2018-03-13
 	 */ 
-	JSONObject login(JSONObject jsonObject);
+	JSONObject login(UserVo userVo);
 
 	/**
 	 * 登出

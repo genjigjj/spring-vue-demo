@@ -1,16 +1,8 @@
-/**
- * 文件名: UserController.java
- * 版权：  深圳市中诺思资讯
-
- * 描述:  
- * 修改人: gjj
- * 修改时间： 2018年1月30日上午11:41:18
- * 修改内容:
- */
 package com.gjj.springvuedemo.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.gjj.springvuedemo.service.IUserService;
+import com.gjj.springvuedemo.vo.UserVo;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,15 +23,21 @@ public class UserController {
 	@Autowired
 	private IUserService userService;
 
+	/**
+	 * 登录
+	 * @param 
+	 * @return 
+	 * @author gjj
+	 * @date 2018-03-23
+	 */ 
 	@PostMapping(value = "/login")
-	public JSONObject login(@RequestBody JSONObject requestJson){
-        return userService.login(requestJson);
+	public JSONObject login(@RequestBody UserVo userVo){
+        return userService.login(userVo);
 	}
 
 	/**
 	 * 登出
-	 * @param
-	 * @return
+	 * @return 登出是否成功json消息
 	 * @author gjj
 	 * @date 2018/2/3
 	 */
@@ -60,17 +58,16 @@ public class UserController {
         return userService.getAllUser();
     }
 
-
     /**
      * 通过多个id获取用户
-     * @param 
-     * @return 
+     * @param userVo 包括查询id数组
+     * @return json数据
      * @author gjj
      * @date 2018/3/4
      */ 
     @PostMapping(value = "/users")
-    public JSONObject findUserByIds(@RequestBody JSONObject requestJson){
-       return userService.findByIds(requestJson);
+    public JSONObject findUserByIds(@RequestBody UserVo userVo){
+       return userService.findByIds(userVo);
 	}
 
 }
