@@ -99,6 +99,9 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+                    <jvmArguments>
+                        -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8099
+                    </jvmArguments>
 					<fork>true</fork>
 					<!--支持静态文件热部署-->
 					<addResources>true</addResources>
