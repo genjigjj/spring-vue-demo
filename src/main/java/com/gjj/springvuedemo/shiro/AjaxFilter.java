@@ -2,7 +2,7 @@ package com.gjj.springvuedemo.shiro;
 
 import com.alibaba.fastjson.JSONObject;
 import com.gjj.springvuedemo.util.ResultEnum;
-import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
+import org.apache.shiro.web.filter.authc.UserFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -20,9 +20,9 @@ import java.io.PrintWriter;
  * @project spring-vue-demo
  * @date 2018-03-14 10:13
  **/
-public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
+public class AjaxFilter extends UserFilter {
 
-    private static final Logger logger = LoggerFactory.getLogger(AjaxAuthenticationFilter.class);
+    private static final Logger logger = LoggerFactory.getLogger(AjaxFilter.class);
 
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
@@ -48,7 +48,7 @@ public class AjaxAuthenticationFilter extends FormAuthenticationFilter {
     }
 
     @Bean
-    public FilterRegistrationBean registration(AjaxAuthenticationFilter filter) {
+    public FilterRegistrationBean registration(AjaxFilter filter) {
         FilterRegistrationBean registration = new FilterRegistrationBean(filter);
         registration.setEnabled(false);
         return registration;

@@ -71,16 +71,20 @@ public class UserServiceImpl implements IUserService {
         Subject subject = SecurityUtils.getSubject();
         try {
             if (userVo != null) {
-                UsernamePasswordToken token = new UsernamePasswordToken(userVo.getUsername(), userVo.getPassword());
+                UsernamePasswordToken token = new UsernamePasswordToken(userVo.getUsername(), userVo.getPassword(),userVo.isRememberMe());
                 subject.login(token);
-                User user = (User) subject.getPrincipal();
-                subject.getSession().setAttribute("user", user);
-                return JsonUtil.returnJson(ResultEnum.LOGIN_SUCCESS, null);
             }
         } catch (AuthenticationException e) {
             logger.info("认证失败");
+            return JsonUtil.returnJson(ResultEnum.LOGIN_FAIL, null);
         }
-        return JsonUtil.returnJson(ResultEnum.LOGIN_FAIL, null);
+        if (subject.isAuthenticated()){
+            User user = (User) subject.getPrincipal();
+            subject.getSession().setAttribute("user", user);
+            return JsonUtil.returnJson(ResultEnum.LOGIN_SUCCESS, null);
+        }else {
+            return JsonUtil.returnJson(ResultEnum.LOGIN_FAIL, null);
+        }
     }
 
     @Override

@@ -15,6 +15,8 @@ public class UserVo {
 
     private Integer[] queryIds;
 
+    private boolean rememberMe;
+
     public String getUsername() {
         return username;
     }
@@ -37,5 +39,13 @@ public class UserVo {
 
     public void setQueryIds(Integer[] queryIds) {
         this.queryIds = queryIds;
+    }
+
+    public boolean isRememberMe() {
+        return rememberMe;
+    }
+
+    public void setRememberMe(boolean rememberMe) {
+        this.rememberMe = rememberMe;
     }
 }

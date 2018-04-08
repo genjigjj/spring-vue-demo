@@ -5,10 +5,7 @@ import com.gjj.springvuedemo.service.IUserService;
 import com.gjj.springvuedemo.vo.UserVo;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 用户控制器
@@ -17,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @date 2018/3/3
  */
+@CrossOrigin(origins = {"*"})
 @RestController
 public class UserController {
 	
@@ -25,8 +23,8 @@ public class UserController {
 
 	/**
 	 * 登录
-	 * @param 
-	 * @return 
+	 * @param userVo 用户信息
+	 * @return json数据
 	 * @author gjj
 	 * @date 2018-03-23
 	 */ 
