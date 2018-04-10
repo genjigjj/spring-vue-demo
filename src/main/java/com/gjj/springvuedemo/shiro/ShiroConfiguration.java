@@ -16,6 +16,7 @@ import org.apache.shiro.web.servlet.SimpleCookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -168,4 +169,31 @@ public class ShiroConfiguration {
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
     }
+
+    /**
+     * 自定义过滤器注册
+     * @param ajaxFilter ajax过滤器
+     * @return 过滤器注册bean
+     * @author gjj
+     * @date 2018-04-09
+     */
+    @Bean
+    public FilterRegistrationBean registration(AjaxFilter ajaxFilter) {
+        FilterRegistrationBean registration = new FilterRegistrationBean(ajaxFilter);
+        //取消spring-boot对filter的自动注册,改由shiro管理
+        registration.setEnabled(false);
+        return registration;
+    }
+
+    /**
+     * 自定义过滤器
+     * @return 自定义ajax过滤器
+     * @author gjj
+     * @date 2018-04-09
+     */ 
+    @Bean
+    public AjaxFilter ajaxFilter(){
+        return new AjaxFilter();
+    }
+
 }

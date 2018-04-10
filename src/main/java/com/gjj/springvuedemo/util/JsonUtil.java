@@ -20,10 +20,12 @@ public class JsonUtil {
      */ 
     public static <T>JSONObject returnJson(ResultEnum resultEnum,T returnData){
         JSONObject resultJson = new JSONObject();
-        resultJson.put("returnCode", resultEnum.getCode());
-        resultJson.put("returnMsg", resultEnum.getMessage());
+        resultJson.put("code", resultEnum.getCode());
+        if(resultEnum.getMessage() != null){
+            resultJson.put("message", resultEnum.getMessage());
+        }
         if(returnData != null){
-            resultJson.put("returnData", returnData);
+            resultJson.put("data", returnData);
         }
         return resultJson;
     }

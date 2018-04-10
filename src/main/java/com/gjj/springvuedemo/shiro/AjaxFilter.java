@@ -5,8 +5,6 @@ import com.gjj.springvuedemo.util.ResultEnum;
 import org.apache.shiro.web.filter.authc.UserFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -39,19 +37,12 @@ public class AjaxFilter extends UserFilter {
         } catch (Exception e) {
             logger.info(e.getMessage(),e);
         } finally {
-            if (null != out) {
+            if (out != null) {
                 out.flush();
                 out.close();
             }
         }
         return false;
-    }
-
-    @Bean
-    public FilterRegistrationBean registration(AjaxFilter filter) {
-        FilterRegistrationBean registration = new FilterRegistrationBean(filter);
-        registration.setEnabled(false);
-        return registration;
     }
 
 }

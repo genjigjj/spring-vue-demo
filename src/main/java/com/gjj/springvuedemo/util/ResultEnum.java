@@ -8,17 +8,16 @@ package com.gjj.springvuedemo.util;
  */
 public enum ResultEnum {
 
+    SUCCESS("20000",null),
     LOGIN_FAIL("100","登录失败"),
-    LOGIN_SUCCESS("101","登录成功"),
     LOGOUT_FAIL("200","退出失败"),
-    LOGOUT_SUCCESS("201","退出成功"),
     DATA_FAIL("300","数据获取失败"),
-    DATA_SUCCESS("301","数据获取成功"),
     BAD_REQUEST("400", "请求处理异常，请稍后再试"),
     UNAUTHORIZED("401", "权限不足"),
     NOT_FOUND("404", "请求路径不存在"),
     REQUEST_METHODS_ERROR("500", "请求方式有误,请检查 GET/POST"),
     LOGIN_TIMEOUT("501", "登录超时,请重新登录");
+
     /** 错误代码 */
     private final String code;
 

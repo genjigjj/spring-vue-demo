@@ -40,7 +40,7 @@ public class UserServiceImpl implements IUserService {
     public JSONObject getAllUser() {
         List<User> userList = userMapper.getAllUser();
         if (CollectionUtils.isNotEmpty(userList)) {
-            return JsonUtil.returnJson(ResultEnum.DATA_SUCCESS, userList);
+            return JsonUtil.returnJson(ResultEnum.SUCCESS, userList);
         }
         return JsonUtil.returnJson(ResultEnum.DATA_FAIL, null);
     }
@@ -55,7 +55,7 @@ public class UserServiceImpl implements IUserService {
         if (userVo != null && userVo.getQueryIds() != null) {
             List<User> userList = userMapper.findByIds(userVo.getQueryIds());
             if (CollectionUtils.isNotEmpty(userList)) {
-                return JsonUtil.returnJson(ResultEnum.DATA_SUCCESS, userList);
+                return JsonUtil.returnJson(ResultEnum.SUCCESS, userList);
             }
         }
         return JsonUtil.returnJson(ResultEnum.DATA_FAIL, null);
@@ -81,7 +81,7 @@ public class UserServiceImpl implements IUserService {
         if (subject.isAuthenticated()){
             User user = (User) subject.getPrincipal();
             subject.getSession().setAttribute("user", user);
-            return JsonUtil.returnJson(ResultEnum.LOGIN_SUCCESS, null);
+            return JsonUtil.returnJson(ResultEnum.SUCCESS, user.getUserName());
         }else {
             return JsonUtil.returnJson(ResultEnum.LOGIN_FAIL, null);
         }
@@ -96,7 +96,7 @@ public class UserServiceImpl implements IUserService {
             logger.info(e.getMessage(), e);
             return JsonUtil.returnJson(ResultEnum.LOGOUT_FAIL, null);
         }
-        return JsonUtil.returnJson(ResultEnum.LOGOUT_SUCCESS, null);
+        return JsonUtil.returnJson(ResultEnum.SUCCESS, null);
     }
 
 }
