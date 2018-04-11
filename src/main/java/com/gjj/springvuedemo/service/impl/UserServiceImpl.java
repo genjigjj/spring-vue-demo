@@ -71,7 +71,7 @@ public class UserServiceImpl implements IUserService {
         Subject subject = SecurityUtils.getSubject();
         try {
             if (userVo != null) {
-                UsernamePasswordToken token = new UsernamePasswordToken(userVo.getUsername(), userVo.getPassword(),userVo.isRememberMe());
+                UsernamePasswordToken token = new UsernamePasswordToken(userVo.getUsername(), userVo.getPassword(),true);
                 subject.login(token);
             }
         } catch (AuthenticationException e) {
@@ -97,6 +97,17 @@ public class UserServiceImpl implements IUserService {
             return JsonUtil.returnJson(ResultEnum.LOGOUT_FAIL, null);
         }
         return JsonUtil.returnJson(ResultEnum.SUCCESS, null);
+    }
+
+    @Override
+    public JSONObject findUserInfo() {
+        try{
+            User user = (User) SecurityUtils.getSubject().getPrincipal();
+            return JsonUtil.returnJson(ResultEnum.SUCCESS, user.getUserName());
+        }catch (Exception e){
+            logger.info(e.getMessage(), e);
+            return JsonUtil.returnJson(ResultEnum.DATA_FAIL, null);
+        }
     }
 
 }

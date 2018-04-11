@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  *
  * @date 2018/3/3
  */
-@CrossOrigin(origins = {"*"})
+@CrossOrigin
 @RestController
 public class UserController {
 	
@@ -67,5 +67,16 @@ public class UserController {
     public JSONObject findUserByIds(@RequestBody UserVo userVo){
        return userService.findByIds(userVo);
 	}
+
+	/**
+	 * 获取用户信息
+	 * @return 用户信息
+	 * @author gjj
+	 * @date 2018-04-11
+	 */
+    @GetMapping(value = "/info")
+	public JSONObject findUserInfo(){
+        return userService.findUserInfo();
+    }
 
 }

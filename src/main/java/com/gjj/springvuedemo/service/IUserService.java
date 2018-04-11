@@ -66,4 +66,12 @@ public interface IUserService {
 	 */
 	JSONObject logOut();
 
+	/**
+	 * 获取用户信息
+	 * @return 用户信息Vo
+	 * @author gjj
+	 * @date 2018-04-11
+	 */ 
+	JSONObject findUserInfo();
+
 }
