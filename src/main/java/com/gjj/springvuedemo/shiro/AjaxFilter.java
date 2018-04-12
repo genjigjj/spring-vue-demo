@@ -1,16 +1,19 @@
 package com.gjj.springvuedemo.shiro;
 
 import com.alibaba.fastjson.JSONObject;
+import com.gjj.springvuedemo.util.JsonUtil;
 import com.gjj.springvuedemo.util.ResultEnum;
 import org.apache.shiro.web.filter.authc.UserFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
-
 /**
  * ajax认证拦截器
  *
@@ -24,14 +27,13 @@ public class AjaxFilter extends UserFilter {
 
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("returnCode", ResultEnum.UNAUTHORIZED.getCode());
-        jsonObject.put("returnMsg", ResultEnum.UNAUTHORIZED.getMessage());
+        JSONObject jsonObject = JsonUtil.returnJson(ResultEnum.UNAUTHORIZED,null);
         PrintWriter out = null;
         HttpServletResponse res = (HttpServletResponse) response;
         try {
-            res.setCharacterEncoding("UTF-8");
-            res.setContentType("application/json");
+            res.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+            res.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,((HttpServletRequest) request).getHeader(HttpHeaders.ORIGIN));
+            res.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS,"true");
             out = response.getWriter();
             out.println(jsonObject);
         } catch (Exception e) {
