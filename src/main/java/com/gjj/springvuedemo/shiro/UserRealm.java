@@ -70,7 +70,8 @@ public class UserRealm extends AuthorizingRealm {
                 //账号不存在
                 throw  new UnknownAccountException();
             }
-            return  new SimpleAuthenticationInfo(user,user.getUserPassword(),this.getClass().getName());
+            //以用户名作为盐值
+            return  new SimpleAuthenticationInfo(user,user.getUserPassword(),new MyByteSource(user.getUserName()),this.getClass().getName());
         }
         return null;
     }

@@ -1,4 +1,7 @@
 package com.gjj.springvuedemo.model;
+
+import java.io.Serializable;
+
 /**
  * 权限实体
  *
@@ -6,7 +9,7 @@ package com.gjj.springvuedemo.model;
  *
  * @date 2018/3/3
  */
-public class Permission {
+public class Permission implements Serializable {
 
     /** 权限id */
     private Integer pid;

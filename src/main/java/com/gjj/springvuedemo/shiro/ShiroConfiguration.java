@@ -1,8 +1,10 @@
 package com.gjj.springvuedemo.shiro;
 
+import com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.codec.Base64;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -20,6 +22,8 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.servlet.Filter;
 import java.util.LinkedHashMap;
@@ -88,10 +92,14 @@ public class ShiroConfiguration {
      * Shiro Realm 继承自AuthorizingRealm的自定义Realm,即指定Shiro验证用户登录的类为自定义的
      */
     @Bean
-    public UserRealm userRealm(CredentialsMatcher credentialsMatcher) {
+    public UserRealm userRealm(CredentialsMatcher credentialsMatcher,ShiroRedisCacheManager redisCacheManager) {
         logger.info("userRealm注入");
         UserRealm userRealm = new UserRealm();
-      //  userRealm.setCredentialsMatcher(credentialsMatcher);
+        userRealm.setCredentialsMatcher(credentialsMatcher);
+        userRealm.setCachingEnabled(true);
+        userRealm.setAuthenticationCachingEnabled(true);
+        userRealm.setAuthorizationCachingEnabled(true);
+        userRealm.setCacheManager(redisCacheManager);
         return userRealm;
     }
 
@@ -107,7 +115,7 @@ public class ShiroConfiguration {
         logger.info("credentialsMatcher注入");
         HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
         //散列算法:这里使用MD5算法;
-        hashedCredentialsMatcher.setHashAlgorithmName("md5");
+        hashedCredentialsMatcher.setHashAlgorithmName(Md5Hash.ALGORITHM_NAME);
         //散列的次数，比如散列两次，相当于 md5(md5(""));
         hashedCredentialsMatcher.setHashIterations(2);
         //storedCredentialsHexEncoded默认是true，此时用的是密码加密用的是Hex编码；false时用Base64编码
@@ -143,6 +151,31 @@ public class ShiroConfiguration {
         return cookieRememberMeManager;
     }
 
+    @Bean
+    public ShiroRedisCacheManager redisCacheManager(RedisTemplate<Object, Object> redisTemplate) {
+        ShiroRedisCacheManager cacheManager = new ShiroRedisCacheManager(redisTemplate);
+        return cacheManager;
+    }
+
+    @Bean
+    public RedisTemplate<Object, Object> redisTemplate(JedisConnectionFactory connectionFactory) {
+        RedisTemplate<Object, Object> template = new RedisTemplate<>();
+        GenericFastJsonRedisSerializer fastJsonRedisSerializer = new GenericFastJsonRedisSerializer();
+        //设置默认的Serialize，包含 keySerializer & valueSerializer
+        template.setDefaultSerializer(fastJsonRedisSerializer);
+        template.setConnectionFactory(connectionFactory);
+        return template;
+    }
+
+    @Bean
+    public JedisConnectionFactory connectionFactory(){
+        JedisConnectionFactory conn = new JedisConnectionFactory();
+        conn.setDatabase(1);
+        conn.setHostName("127.0.0.1");
+        conn.setPort(6379);
+        conn.setTimeout(3000);
+        return conn;
+    }
 
     /**
      * Shiro生命周期处理器

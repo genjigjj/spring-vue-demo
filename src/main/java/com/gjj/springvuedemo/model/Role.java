@@ -1,5 +1,6 @@
 package com.gjj.springvuedemo.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  *
  * @date 2018/3/3
  */
-public class Role {
+public class Role implements Serializable {
 
     /** 角色主键 */
     private Integer rid;
