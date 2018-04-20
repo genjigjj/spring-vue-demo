@@ -18,8 +18,14 @@ info:
 logging:
     path: ${user.home}/logs
 
-#mysql 
+#spring
 spring:
+  #屏蔽默认异常处理
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+  #mysql
   datasource:
     druid:
       #JDBC 配置

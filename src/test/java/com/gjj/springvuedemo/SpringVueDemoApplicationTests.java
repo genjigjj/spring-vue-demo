@@ -18,7 +18,7 @@ public class SpringVueDemoApplicationTests {
 
 	@Test
 	public void contextLoads() {
-        Md5Hash md5Hash = new Md5Hash("123456","admin",2);
+        Md5Hash md5Hash = new Md5Hash("000000","customer",2);
         System.out.println(md5Hash.toString());
 	}
 

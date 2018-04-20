@@ -9,6 +9,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
@@ -71,7 +72,7 @@ public class UserRealm extends AuthorizingRealm {
                 throw  new UnknownAccountException();
             }
             //以用户名作为盐值
-            return  new SimpleAuthenticationInfo(user,user.getUserPassword(),new MyByteSource(user.getUserName()),this.getClass().getName());
+            return  new SimpleAuthenticationInfo(user,user.getUserPassword(),ByteSource.Util.bytes(user.getUserName()),this.getClass().getName());
         }
         return null;
     }

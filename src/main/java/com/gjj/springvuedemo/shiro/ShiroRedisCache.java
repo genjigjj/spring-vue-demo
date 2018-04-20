@@ -35,7 +35,10 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
         if (key == null) {
             return null;
         }
-        return redisTemplate.opsForValue().get(this.prefix + key);
+        if (key instanceof String){
+            key = (K) (this.prefix + key);
+        }
+        return redisTemplate.opsForValue().get(key);
     }
 
     @Override
@@ -43,19 +46,26 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
         if (value == null) {
             return null;
         }
-        redisTemplate.opsForValue().set((K) (this.prefix + key), value);
-        redisTemplate.expire((K) (this.prefix + key), 30, TimeUnit.MINUTES);
+        //如果key类型为String
+        if (key instanceof String){
+            key = (K) (this.prefix + key);
+        }
+        redisTemplate.opsForValue().set(key, value);
+        redisTemplate.expire(key, 30, TimeUnit.MINUTES);
         return value;
     }
 
     @Override
     public V remove(K key) throws CacheException {
-        if (!(key instanceof String)) {
+        if (key == null){
             return null;
+        }
+        if (key instanceof String){
+            key = (K) (this.prefix + key);
         }
         ValueOperations<K, V> vo = redisTemplate.opsForValue();
         V value = vo.get(key);
-        redisTemplate.delete((K) key);
+        redisTemplate.delete(key);
         return value;
     }
 

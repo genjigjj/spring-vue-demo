@@ -9,7 +9,6 @@ import com.gjj.springvuedemo.util.ResultEnum;
 import com.gjj.springvuedemo.vo.UserVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -68,20 +67,11 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public JSONObject login(UserVo userVo) {
-        Subject subject = SecurityUtils.getSubject();
-        try {
-            if (userVo != null) {
-                UsernamePasswordToken token = new UsernamePasswordToken(userVo.getUsername(), userVo.getPassword(),true);
-                subject.login(token);
-            }
-        } catch (AuthenticationException e) {
-            logger.info("认证失败");
-            return JsonUtil.returnJson(ResultEnum.LOGIN_FAIL, null);
-        }
-        if (subject.isAuthenticated()){
-            User user = (User) subject.getPrincipal();
-            subject.getSession().setAttribute("user", user);
-            return JsonUtil.returnJson(ResultEnum.SUCCESS, user.getUserName());
+        if (userVo != null) {
+            UsernamePasswordToken token = new UsernamePasswordToken(userVo.getUsername(), userVo.getPassword(),true);
+            Subject subject = SecurityUtils.getSubject();
+            subject.login(token);
+            return JsonUtil.returnJson(ResultEnum.SUCCESS, null);
         }else {
             return JsonUtil.returnJson(ResultEnum.LOGIN_FAIL, null);
         }

@@ -12,13 +12,13 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
 import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
 import org.apache.shiro.web.filter.authc.AnonymousFilter;
+import org.apache.shiro.web.filter.authc.UserFilter;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -53,8 +53,7 @@ public class ShiroConfiguration {
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         Map<String, Filter> filterMap = new LinkedHashMap<>();
         filterMap.put("anon",new AnonymousFilter());
-        //filterMap.put("authc", new AjaxFilter());
-        filterMap.put("user",new AjaxFilter());
+        filterMap.put("user",new UserFilter());
         shiroFilterFactoryBean.setFilters(filterMap);
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         filterChainDefinitionMap.put("/login","anon");
@@ -96,8 +95,8 @@ public class ShiroConfiguration {
         logger.info("userRealm注入");
         UserRealm userRealm = new UserRealm();
         userRealm.setCredentialsMatcher(credentialsMatcher);
+        //只缓存授权信息
         userRealm.setCachingEnabled(true);
-        userRealm.setAuthenticationCachingEnabled(true);
         userRealm.setAuthorizationCachingEnabled(true);
         userRealm.setCacheManager(redisCacheManager);
         return userRealm;
@@ -201,32 +200,6 @@ public class ShiroConfiguration {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
-    }
-
-    /**
-     * 自定义过滤器注册
-     * @param ajaxFilter ajax过滤器
-     * @return 过滤器注册bean
-     * @author gjj
-     * @date 2018-04-09
-     */
-    @Bean
-    public FilterRegistrationBean registration(AjaxFilter ajaxFilter) {
-        FilterRegistrationBean registration = new FilterRegistrationBean(ajaxFilter);
-        //取消spring-boot对filter的自动注册,改由shiro管理
-        registration.setEnabled(false);
-        return registration;
-    }
-
-    /**
-     * 自定义过滤器
-     * @return 自定义ajax过滤器
-     * @author gjj
-     * @date 2018-04-09
-     */ 
-    @Bean
-    public AjaxFilter ajaxFilter(){
-        return new AjaxFilter();
     }
 
 }
